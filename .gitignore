@@ -1,12 +1,23 @@
-*.class
+package br.com.client;
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+import java.io.*;
+import java.net.*;
 
-# Package Files #
-*.jar
-*.war
-*.ear
+public class Client {
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+    public static void main(String[] args) throws IOException {
+        String sentence;
+        String modifiedSentence;
+        BufferedReader inFromUser = new BufferedReader( new InputStreamReader(System.in));
+        Socket clientSocket = new Socket("localhost", 6789);
+        DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        sentence = inFromUser.readLine();
+        outToServer.writeBytes(sentence + '\n');
+        modifiedSentence = inFromServer.readLine();
+        System.out.println("FROM SERVER: " + modifiedSentence);
+        clientSocket.close();
+       
+    }
+    
+}
